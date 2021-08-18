@@ -14,7 +14,7 @@ const http = axios.create({
 });
 
 export const getImages = (params) => {
-  return http.get('/photos/', {
+  return http.get('/photos', {
     params : params
   });
 }

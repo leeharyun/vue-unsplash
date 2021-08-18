@@ -4,7 +4,8 @@ export const unsplash = {
     namespaced: true,
     state: () => ({
         images: [],
-        totalImages: 0
+        totalImages: 0,
+        per_page: 10
     }),
     mutations: {
         SET_IMAGES(state, images) {
@@ -18,13 +19,12 @@ export const unsplash = {
         }
     },
     actions: {
-        getImages({ commit }, { page, per_page, order_by = 'latest' }) {
+        getImages({ commit, state }, { page, per_page = state.per_page, order_by = 'latest' }) {
             let params = {
                 page: page,
                 per_page: per_page,
                 order_by: order_by
             };            
-
             unsplashAPI
                 .getImages(params)
                 .then((res) => {
@@ -36,7 +36,7 @@ export const unsplash = {
                     console.log(`ERROR : ${err}`);
                 });
         },
-        getSearchImages({ commit }, { page, per_page, order_by = 'latest', query = "" }) {
+        getSearchImages({ commit, state }, { page, per_page = state.per_page, order_by = 'latest', query = "" }) {
             let params = {
                 page: page,
                 per_page: per_page,
