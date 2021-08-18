@@ -2,7 +2,7 @@
 export let unsplashAPIConfig = {
     url : '',
     key : {
-        accessKey : '',
-        secretKey : ''
+        accessKey : 'YOUR ACCESS KEY',
+        secretKey : 'YOUR SECRET KEY'
     }
 };
