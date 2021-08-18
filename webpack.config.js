@@ -43,6 +43,7 @@ module.exports = {
             },
             {
                 test: /\.js$/,
+                exclude: /node_modules/, // 제외할 경로
                 use: [
                     'babel-loader'
                 ]

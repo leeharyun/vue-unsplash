@@ -1,0 +1,213 @@
+@import './color.scss';
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video, input {
+	margin: 0;
+	padding: 0;
+    line-height: 1;
+}
+
+button, input, textarea {
+    outline: none;
+    border: none;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+ul, li {
+    list-style: none;
+}
+
+i {
+    font-style: normal;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+.green {
+    color: $green;
+}
+
+.header, .container {
+    display: block;
+    max-width: 1200px;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.header {
+    margin: 24px auto;
+    .title {
+        text-align: center;
+    }
+}
+
+.paging {
+    display: block;
+    width: 300px;
+    height: 50px;
+    margin: 0 auto;
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        li {
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            flex: 1;
+            background-color: #fff;
+            text-align: center;
+            border: 1px solid rgba(101, 106, 113, 0.2);
+
+            &.active {
+                a {
+                    color: $red;
+                }
+            }
+
+            a {
+                display: block;
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+}
+
+.container {
+    .serach-box {
+        margin: 0 10px;
+        background: #fff;
+        border: 1px solid rgba(101, 106, 113, 0.2);
+        box-sizing: border-box;
+    
+        ul {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            font-size: 1.5rem;
+            color: $none-active;
+            li {
+                display: block;
+                margin-right: 8px;
+    
+                &.search-area {
+                    width: 100%;
+                    height: 100%;
+                    .search-input {
+                        display: block;
+                        width: 100%;
+                        height: 100%;
+                        padding: 10px;
+                    }
+                }
+    
+                .ic-search {
+                    display: block;
+                } 
+                
+                .ic-search {
+                    &::before {
+                        font-family: 'xeicon' !important;
+                        content: "\e97a";
+                    }
+                }
+    
+            }
+        }
+    }
+    .search-area {
+        padding: 10px;
+    }
+    .image-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+
+        .image-container__item {
+            display: block;
+            width: 250px;
+            padding: 15px;
+            margin: 10px;
+            flex: 1 1 auto;
+            border: 1px solid rgba(101, 106, 113, 0.2);
+            box-sizing: border-box;
+
+            &:hover {
+                border: 1px solid $green;
+            }
+
+            a {
+                display: block;
+                width: 100%;
+                height: 100%;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+
+            .image-area {
+                width: 100%;
+                height: 250px;
+                margin-bottom: 8px;
+            }
+
+            .image-info {
+                display: block;
+                float: left;
+                width: 100%;
+                .image-info__name {
+                    float: left;
+                }
+                .image-info__like {
+                    float: right;
+                    
+                    &:hover {
+                        font-weight: 800;
+                    }
+
+                    i.like {
+                        display: inline-block;
+                        &:before {
+                            font-family: 'xeicon' !important;
+                            content: "\ea11";
+                        }
+                    
+                        &.active {
+                            &:before {
+                                font-family: 'xeicon' !important;
+                                content: "\ea10";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

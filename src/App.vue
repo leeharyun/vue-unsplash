@@ -1,19 +1,13 @@
 <template>
-  <HelloWorld
-    :msg="message"/>
+  <DefaultLayout />
 </template>
 
 <script>
-import HelloWorld from '@/components/HelloWorld'
+import DefaultLayout from '@/layout/DefaultLayout.vue';
 
 export default {
   components: {
-    HelloWorld
-  },
-  data() {
-    return {
-      message: 'Hello Vue!'
-    }
+    DefaultLayout
   }
 }
 </script>
