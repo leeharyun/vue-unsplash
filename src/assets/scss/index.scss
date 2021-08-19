@@ -211,11 +211,11 @@ a {
                         &:before {
                             content: "\ea11";
                         }
-                    
-                        &.active {
-                            &:before {
-                                content: "\ea10";
-                            }
+                    }
+
+                    &.active {
+                        i.like:before {
+                            content: "\ea10";
                         }
                     }
                 }

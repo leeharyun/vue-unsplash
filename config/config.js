@@ -1,8 +1,8 @@
 // unsplash API
 export let unsplashAPIConfig = {
     key: {
-        accessKey: '-Bl4FgMJYO0qJVjEduwb5Iu_441s1Wb5dpBtr_ASaC0',
-        secretKey: 'JFldPOk5j9SEDauAUhLLS5X7jefSMKikEWqWoFlpkXw'
+        accessKey: 'mv84kleu5X5Azwyve5tTjszOftohylKesJ7brt2W3T4',
+        secretKey: 's8qSq1gBKksTZRyyEdSTaVoj70qdNN-tcR0upicWCXs'
     },
     redirect_uri: 'http://localhost/auth',
     response_type: 'code',

@@ -2,6 +2,7 @@ import * as unsplashAPI from '@/API/unsplashAPI.js';
 import { unsplashAPIConfig } from '../../../config/config.js';
 import partials from '../partials';
 
+
 export const unsplash = {
     namespaced: true,
     state: () => ({
@@ -24,7 +25,8 @@ export const unsplash = {
         },
         SET_TOKEN(state, tokenValue){
             state.token = tokenValue;
-            state.Authorization = tokenValue.access_token
+            state.Authorization = `Bearer ${tokenValue.access_token}`
+            //console.log()
         }
     },
     actions: {
@@ -37,7 +39,7 @@ export const unsplash = {
             unsplashAPI
                 .getImages(params)
                 .then((res) => {
-                    //console.log(res);
+                    console.log(res);
                     commit('SET_IMAGES', res.data);
                     commit('TOTAL_IMAGES', res.headers['x-total']);
                     commit('SET_LOAD_STATE', partials.LOAD_STATE.SUCCESS)
@@ -67,12 +69,11 @@ export const unsplash = {
                 });
         },
         likeImageAction({ commit, state }, id) {
-            console.log('state.Authorization:' + state.Authorization);
-            //unsplashAPI.http.defaults.headers.common['Authorization'] = `Bearer ${state.Authorization}`;
             unsplashAPI
                 .likeImageAction(id, `Bearer ${state.Authorization}`)
                 .then((res) => {
                     console.log(res);
+
                     /*console.log(res);
                     commit('SET_LOAD_STATE', partials.LOAD_STATE.SUCCESS)*/
                 })
@@ -112,14 +113,18 @@ export const unsplash = {
                 .then((res) => {
                     if(res.status === 200) {
                         console.log(res);
-                        //unsplashAPI.http.defaults.headers.common['Authorization'] = `Bearer ${res.data.access_token}`;
                         commit('SET_TOKEN', res.data);
-                        return true;
+                        window.location.href = '/';
                     }  
                 })
                 .catch((err) => {
                     console.log(`ERROR : ${err}`); 
                 });
         },
+    },
+    getters: {
+        getAuthorization: state => {
+            return state.Authorization
+        }
     }
 };
