@@ -10,7 +10,7 @@
                 <li class="image-info__name">
                     <span class="name">{{image.user.name}}</span>
                 </li>
-                <li :class="(image.liked_by_user) ? 'image-info__like active' : 'image-info__like'" @click="likeImageAction(image.id)">
+                <li :class="(image.liked_by_user) ? 'image-info__like active' : 'image-info__like'" @click="likeImageAction(image.id, image.liked_by_user)">
                     <a href="javascript:;">
                         <i class="like"></i>
                         {{image.likes}}
@@ -29,8 +29,9 @@ export default {
         }
     },
     methods : {
-        likeImageAction(id) {
-            this.$store.dispatch('unsplash/likeImageAction', id);
+        likeImageAction(id, liked_by_user) {
+            (liked_by_user) ? this.$store.dispatch('unsplash/unLikeImageAction', id) : this.$store.dispatch('unsplash/likeImageAction', id);
+            //this.$store.dispatch('unsplash/likeImageAction', id);
         }
     }
 }

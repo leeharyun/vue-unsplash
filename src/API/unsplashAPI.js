@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { cacheAdapterEnhancer } from 'axios-extensions';
 import { unsplashAPIConfig } from '../../config/config.js';
+import store from '@/store/store.js';
 import qs from 'qs';
 
 export const http = axios.create({
@@ -11,6 +12,12 @@ export const http = axios.create({
     'Cache-Control': 'no-cache'
   },
   adapter: cacheAdapterEnhancer(axios.defaults.adapter, { enabledByDefault: false }),
+});
+
+http.interceptors.request.use(function (config) {
+  config.headers.Authorization = store.state.unsplash.Authorization;
+
+  return config;
 });
 
 let config = unsplashAPIConfig;
@@ -33,14 +40,12 @@ export const setToken = (code) => {
 };
 
 export const getImages = (params) => {
-  http.defaults.headers.common['Authorization'] = `Client-ID ${unsplashAPIConfig.key.accessKey}`;
   return http.get('/photos', {
     params : params
   });
 }
 
 export const getSearchImages = (params) => {
-  http.defaults.headers.common['Authorization'] = `Client-ID ${unsplashAPIConfig.key.accessKey}`;
   return http.get('/search/photos', {
     params : params
   },
@@ -49,12 +54,10 @@ export const getSearchImages = (params) => {
 }
 
 export const likeImageAction = (id, token) => {
-  http.defaults.headers.common['Authorization'] = token;
   return http.post(`/photos/${id}/like`);
 }
 
 export const unLikeImageAction = (id, token) => {
-  http.defaults.headers.common['Authorization'] = token;
   return http.delete(`/photos/${id}/like`);
 }
 

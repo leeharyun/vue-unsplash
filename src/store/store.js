@@ -9,5 +9,6 @@ export default createStore({
   },
   plugins: [createPersistedState({
     paths: ['unsplash'],
+    storage: window.sessionStorage
   })],
 });

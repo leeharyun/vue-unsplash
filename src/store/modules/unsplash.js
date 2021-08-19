@@ -7,6 +7,7 @@ export const unsplash = {
     namespaced: true,
     state: () => ({
         images: [],
+        currentPage: 1,
         totalImages: 0,
         per_page: 10,
         loadState: partials.LOAD_STATE.LOADING,
@@ -70,12 +71,11 @@ export const unsplash = {
         },
         likeImageAction({ commit, state }, id) {
             unsplashAPI
-                .likeImageAction(id, `Bearer ${state.Authorization}`)
+                .likeImageAction(id)
                 .then((res) => {
-                    console.log(res);
-
-                    /*console.log(res);
-                    commit('SET_LOAD_STATE', partials.LOAD_STATE.SUCCESS)*/
+                    console.log(state.currentPage);
+                    this.dispatch('unsplash/getImages', { page : state.currentPage });
+                    commit('SET_LOAD_STATE', partials.LOAD_STATE.SUCCESS);
                 })
                 .catch((err) => {
                     //console.log(err.request.status)
@@ -83,23 +83,26 @@ export const unsplash = {
                         unsplashAPI
                             .getToken();
                     }
-                    //commit('SET_LOAD_STATE', partials.LOAD_STATE.ERROR)
+                    else {
+                        commit('SET_LOAD_STATE', partials.LOAD_STATE.ERROR);
+                    }
                     console.log(`ERROR : ${err}`); 
                 });
         },
-        unLikeImageAction({ commit }, id) {
+        unLikeImageAction({ commit, state }, id) {
             unsplashAPI
                 .unLikeImageAction(id)
                 .then((res) => {
-                    console.log(res);
-                    commit('SET_LOAD_STATE', partials.LOAD_STATE.SUCCESS)
+                    //console.log(res);
+                    this.dispatch('unsplash/getImages', { page : state.currentPage });
+                    commit('SET_LOAD_STATE', partials.LOAD_STATE.SUCCESS);
                 })
                 .catch((err) => {
                     if(err.request.status === 401) {
                         unsplashAPI
                             .getToken();
                     }
-                    //commit('SET_LOAD_STATE', partials.LOAD_STATE.ERROR)
+                    commit('SET_LOAD_STATE', partials.LOAD_STATE.ERROR)
                     console.log(`ERROR : ${err}`); 
                 });
         },

@@ -12,7 +12,9 @@
         </ul>
     </div>
     <div class="loader" v-if="Images.loadState === LOAD_STATE.LOADING"></div>
-
+    <div class="loader" v-if="Images.loadState === LOAD_STATE.ERROR">
+        에러가 발생했습니다.
+    </div>
     <div class="image-container" v-if="Images.loadState === LOAD_STATE.SUCCESS">
         <Image :image="image" v-for="image in Images.images" :key="image.id" />
     </div>
@@ -60,12 +62,16 @@ export default {
             return this.$store.state.unsplash;
         }
     },
-    // 검색창에서 @keyup과 동일한 효과를 원하시면 주석을 해제해주세요
-    /*watch : {
-        keyword(newKeyword){
+    watch : {
+        // 검색창에서 @keyup과 동일한 효과를 원하시면 주석을 해제해주세요
+        /*keyword(newKeyword){
             this.serachAction();
+        },*/
+        currentPage(newPage) {
+            this.$store.state.unsplash.currentPage = newPage;
+            //console.log(this.$store.state.unsplash.currentPage)
         }
-    },*/
+    },
     created(){
         this.getImages();
     },
