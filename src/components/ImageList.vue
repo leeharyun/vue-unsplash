@@ -2,19 +2,22 @@
     <div class="serach-box">
         <ul>
             <li class="search-area">
-                <input type="text" class="search-input" v-model="keyword"/>
+                <input type="text" class="search-input" v-model="keyword" @keyup.enter="serachAction(0)"/>
             </li>
-            <li class="search" data-type="on-search" @click="serachAction()">
+            <li class="search" data-type="on-search" @click="serachAction(0)">
                 <a href="javascript:;">
                     <i class="ic-search"></i>
                 </a>
             </li>
         </ul>
     </div>
-    <div class="image-container">
-        <Image :image="image" v-for="image in Images.images" :key="image.id" @onlikeImageAction="likeImageAction(id)"/>
+    <div class="loader" v-if="Images.loadState === LOAD_STATE.LOADING"></div>
+
+    <div class="image-container" v-if="Images.loadState === LOAD_STATE.SUCCESS">
+        <Image :image="image" v-for="image in Images.images" :key="image.id" />
     </div>
-    <div class="paging" v-if="Images.totalImages > 1">
+    
+    <div class="paging">
         <Pagenate
         v-model="currentPage"
             :page-count="Math.floor(Images.totalImages / Images.per_page)"
@@ -22,7 +25,7 @@
             :prev-text="'<'"
             :next-text="'>'"
             :container-class="'pagination'"
-            :forcePage="currentPage"
+            :currentPage="currentPage"
             :page-class="'page-item'"
             :page-link-class="'page-link-item'"
             :prev-class="'prev-item'"
@@ -37,6 +40,7 @@
 <script>
 import Image from './Image.vue';
 import Pagenate from './Pagenate.vue'; 
+import partials from '@/store/partials'
 
 export default {
     components : {
@@ -47,7 +51,8 @@ export default {
         return {
             keyword : null, 
             currentPage : 1,
-            marginPage : 5
+            marginPage : 5,
+            ...partials
         }
     },
     computed: {
@@ -55,12 +60,12 @@ export default {
             return this.$store.state.unsplash;
         }
     },
-    watch : {
+    // 검색창에서 @keyup과 동일한 효과를 원하시면 주석을 해제해주세요
+    /*watch : {
         keyword(newKeyword){
-            console.log(newKeyword);
             this.serachAction();
         }
-    },
+    },*/
     created(){
         this.getImages();
     },
@@ -68,19 +73,22 @@ export default {
         pageAction(currentPage){
             this.currentPage = currentPage;
             if(this.keyword) {
-                this.serachAction();
+                this.serachAction(1);
             }
             else {
                 this.getImages();
             }
 
-            document.scrollingElement.scrollTop = 0
+            document.scrollingElement.scrollTop = 0;
         },
         getImages(){
             this.$store.dispatch('unsplash/getImages', { page : this.currentPage });
         },
-        serachAction(){
+        serachAction(type = 0){
+            ((type) ? '' : this.currentPage = 1);
+
             if(!this.keyword) {
+                this.currentPage = 1;
                 this.getImages();
                 return;
             }

@@ -1,11 +1,16 @@
 import * as unsplashAPI from '@/API/unsplashAPI.js';
+import { unsplashAPIConfig } from '../../../config/config.js';
+import partials from '../partials';
 
 export const unsplash = {
     namespaced: true,
     state: () => ({
         images: [],
         totalImages: 0,
-        per_page: 10
+        per_page: 10,
+        loadState: partials.LOAD_STATE.LOADING,
+        Authorization: `Client-ID ${unsplashAPIConfig.key.accessKey}`,
+        token : {}
     }),
     mutations: {
         SET_IMAGES(state, images) {
@@ -16,6 +21,10 @@ export const unsplash = {
         },
         SET_LOAD_STATE(state, value) {
             state.loadState = value;
+        },
+        SET_TOKEN(state, tokenValue){
+            state.token = tokenValue;
+            state.Authorization = tokenValue.access_token
         }
     },
     actions: {
@@ -28,11 +37,13 @@ export const unsplash = {
             unsplashAPI
                 .getImages(params)
                 .then((res) => {
-                    console.log(res);
+                    //console.log(res);
                     commit('SET_IMAGES', res.data);
                     commit('TOTAL_IMAGES', res.headers['x-total']);
+                    commit('SET_LOAD_STATE', partials.LOAD_STATE.SUCCESS)
                 })
                 .catch((err) => {
+                    commit('SET_LOAD_STATE', partials.LOAD_STATE.ERROR)
                     console.log(`ERROR : ${err}`);
                 });
         },
@@ -48,25 +59,67 @@ export const unsplash = {
                 .then((res) => {
                     commit('SET_IMAGES', res.data.results);
                     commit('TOTAL_IMAGES', res.headers['x-total']);
+                    commit('SET_LOAD_STATE', partials.LOAD_STATE.SUCCESS)
+                })
+                .catch((err) => {
+                    commit('SET_LOAD_STATE', partials.LOAD_STATE.ERROR)
+                    console.log(`ERROR : ${err}`); 
+                });
+        },
+        likeImageAction({ commit, state }, id) {
+            console.log('state.Authorization:' + state.Authorization);
+            //unsplashAPI.http.defaults.headers.common['Authorization'] = `Bearer ${state.Authorization}`;
+            unsplashAPI
+                .likeImageAction(id, `Bearer ${state.Authorization}`)
+                .then((res) => {
+                    console.log(res);
+                    /*console.log(res);
+                    commit('SET_LOAD_STATE', partials.LOAD_STATE.SUCCESS)*/
+                })
+                .catch((err) => {
+                    //console.log(err.request.status)
+                    if(err.request.status === 401) {
+                        unsplashAPI
+                            .getToken();
+                    }
+                    //commit('SET_LOAD_STATE', partials.LOAD_STATE.ERROR)
+                    console.log(`ERROR : ${err}`); 
+                });
+        },
+        unLikeImageAction({ commit }, id) {
+            unsplashAPI
+                .unLikeImageAction(id)
+                .then((res) => {
+                    console.log(res);
+                    commit('SET_LOAD_STATE', partials.LOAD_STATE.SUCCESS)
+                })
+                .catch((err) => {
+                    if(err.request.status === 401) {
+                        unsplashAPI
+                            .getToken();
+                    }
+                    //commit('SET_LOAD_STATE', partials.LOAD_STATE.ERROR)
+                    console.log(`ERROR : ${err}`); 
+                });
+        },
+        getToken({ commit }) {
+            unsplashAPI
+                .getToken();
+        },
+        setToken({ commit }, code) {
+            unsplashAPI
+                .setToken(code)
+                .then((res) => {
+                    if(res.status === 200) {
+                        console.log(res);
+                        //unsplashAPI.http.defaults.headers.common['Authorization'] = `Bearer ${res.data.access_token}`;
+                        commit('SET_TOKEN', res.data);
+                        return true;
+                    }  
                 })
                 .catch((err) => {
                     console.log(`ERROR : ${err}`); 
                 });
         },
-        likeImageAction({ commit }, id) {
-            unsplashAPI
-                .likeImageAction(id)
-                .then((res) => {
-                    console.log(res);
-                })
-                .catch((err) => {
-                    console.log(`ERROR : ${err}`); 
-                });
-        }
-    },
-    getters: {
-        getImages: (state) => {
-            return state;
-        }
-    },
+    }
 };

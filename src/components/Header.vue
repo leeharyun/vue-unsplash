@@ -1,6 +1,8 @@
 <template>
     <header class="header">
-        <h1 class="title">vue unsplash page</h1>
+        <h1 class="title">
+            <a href="/">vue unsplash page</a>
+        </h1>
     </header>
 </template>
 <script>

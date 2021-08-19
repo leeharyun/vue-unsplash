@@ -17,6 +17,17 @@ time, mark, audio, video, input {
 	padding: 0;
     line-height: 1;
 }
+body {
+    max-width: 100%;
+    min-height: 100%;
+
+    > * {
+        font-family: 'Noto Sans KR', sans-serif;
+        font-size: 16px;
+        font-weight: 300;
+        color: #000;
+    }
+}
 
 button, input, textarea {
     outline: none;
@@ -57,10 +68,10 @@ a {
 }
 
 .paging {
-    display: block;
-    width: 800px;
-    height: 50px;
-    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin: 8px 10px 16px 10px;
 
     .pagination {
         display: flex;
@@ -69,11 +80,11 @@ a {
         width: 100%;
         height: 100%;
         li {
-            display: flex;
-            justify-content: center;
-            align-content: center;
-            flex: 1;
+            position: relative;
+            display: inline-block;
             background-color: #fff;
+            width: 44px;
+            height: 44px;
             text-align: center;
             border: 1px solid rgba(101, 106, 113, 0.2);
 
@@ -87,6 +98,7 @@ a {
                 display: block;
                 width: 100%;
                 height: 100%;
+                line-height: 44px;
             }
         }
     }
@@ -194,14 +206,14 @@ a {
 
                     i.like {
                         display: inline-block;
+                        font-family: 'xeicon' !important;
+                        color: red;
                         &:before {
-                            font-family: 'xeicon' !important;
                             content: "\ea11";
                         }
                     
                         &.active {
                             &:before {
-                                font-family: 'xeicon' !important;
                                 content: "\ea10";
                             }
                         }
